@@ -1,8 +1,9 @@
 import React, { useEffect } from "react";
 import { ScreenContainer } from "../../App";
-import { Stack } from "@mui/material";
+import { Divider, Stack } from "@mui/material";
 import { useReactiveVar } from "@apollo/client";
 import { psidVar } from "../../graphql/reactiveVars";
+import MessengerWebview from "./fbm/MessengerWebview";
 
 const HomeScreen = () => {
   useEffect(() => {
@@ -25,6 +26,10 @@ const HomeScreen = () => {
       // footer={false}
       // content={"content"}
     >
+      <MessengerWebview />
+
+      <Divider />
+
       <Stack sx={{ minHeight: "1000px" }} px={2}>
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Officia temporibus voluptatibus
         illo accusantium ea ad iste! Dolorum asperiores odit eius, illo sequi culpa, perferendis
