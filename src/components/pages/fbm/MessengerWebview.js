@@ -63,13 +63,15 @@ function MessengerWebview() {
   return (
     <div style={{ padding: "1rem", fontFamily: "sans-serif" }}>
       <h2>Messenger Webview Debug</h2>
-
+      <p>
+        <strong>User Agent:</strong> {navigator.userAgent}
+      </p>
+      pageId:{process.env.REACT_APP_PAGE_ID}
       {error && (
         <div style={{ color: "red", marginBottom: "1rem", whiteSpace: "pre-wrap" }}>
           <strong>Error:</strong> {error}
         </div>
       )}
-
       {isReady ? (
         <>
           <p>
@@ -79,7 +81,6 @@ function MessengerWebview() {
       ) : !error ? (
         <p>Loading Messenger context...</p>
       ) : null}
-
       <button onClick={closeWebview}>Close Webview</button>
     </div>
   );
