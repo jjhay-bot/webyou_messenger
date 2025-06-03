@@ -41,3 +41,6 @@ export const paymentDetailsVar = makeVar(
 
 export const invoiceListVar = makeVar([]);
 export const reasonListVar = makeVar([]);
+
+
+export const psidVar = makeVar('test')

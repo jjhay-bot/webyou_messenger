@@ -1,6 +1,6 @@
 import { Routes, Route } from "react-router-dom";
 import { HomeScreen } from "./components/pages";
-import { Badge, Button, Stack, Typography } from "@mui/material";
+import { Badge, Box, Button, Stack, Typography } from "@mui/material";
 import { Outlet } from "react-router-dom";
 // import { useEffect } from "react";
 // import { useReactiveVar } from "@apollo/client";
@@ -11,6 +11,9 @@ import LvhScreen from "./components/pages/LvhScreen";
 import DvhScreen from "./components/pages/DvhScreen";
 import Nav from "./components/atoms/Nav";
 import { useEffect, useState } from "react";
+import { FacebookInit } from "./utils/FacebookInit";
+import { useReactiveVar } from "@apollo/client";
+import { psidVar } from "./graphql/reactiveVars";
 
 const App = () => {
   // const loadingLocal = useReactiveVar(loadingLocalVar);
@@ -23,16 +26,19 @@ const App = () => {
   // if (loadingLocal) return null;
 
   return (
-    <Routes>
-      <Route path="/" element={<Layout />}>
-        <Route path="/" element={<HomeScreen />} />
-        <Route path="svh" element={<SvhScreen />} />
-        <Route path="lvh" element={<LvhScreen />} />
-        <Route path="dvh" element={<DvhScreen />} />
-        {/* <Route path="/invoice" element={<InvoiceScreen />} /> */}
-        {/* <Route path="*" element={<CheckoutPage />} />  */}
-      </Route>
-    </Routes>
+    <>
+      <FacebookInit />
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          <Route path="/" element={<HomeScreen />} />
+          <Route path="svh" element={<SvhScreen />} />
+          <Route path="lvh" element={<LvhScreen />} />
+          <Route path="dvh" element={<DvhScreen />} />
+          {/* <Route path="/invoice" element={<InvoiceScreen />} /> */}
+          {/* <Route path="*" element={<CheckoutPage />} />  */}
+        </Route>
+      </Routes>
+    </>
   );
 };
 
@@ -70,16 +76,22 @@ const DefaultFooter = () => <Stack p={1}>DefaultFooter</Stack>;
 const ScreenContainer = ({ vh = "100vh", children, header, footer, content, ...props }) => {
   const supportsDvh = window.CSS && CSS.supports("(height: 100dvh)");
   const maxHeightUnit = supportsDvh ? vh : "100vh";
-
+  const psid = useReactiveVar(psidVar);
+  
   return (
     <Stack className="layout" height={maxHeightUnit} {...props}>
       <Nav top={`calc(${maxHeightUnit} / 2)`} />
       <Stack className="silver" flex={0}>
         {/* HEADERS */}
         {header ?? <DefaultHeader>{maxHeightUnit}</DefaultHeader>}
+
+        <Badge sx={{ px: 1, color: "grey" }}>{psid}</Badge>
       </Stack>
 
-      <Stack flex={1} sx={{ height: "100%", overflowY: "auto", maxWidth: "100%" }} className="green">
+      <Stack
+        flex={1}
+        sx={{ height: "100%", overflowY: "auto", maxWidth: "100%" }}
+        className="green">
         {/* CONTENTS */}
         {children ?? content}
       </Stack>

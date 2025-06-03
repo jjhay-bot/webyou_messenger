@@ -1,6 +1,8 @@
 import React, { useEffect } from "react";
 import { ScreenContainer } from "../../App";
 import { Stack } from "@mui/material";
+import { useReactiveVar } from "@apollo/client";
+import { psidVar } from "../../graphql/reactiveVars";
 
 const HomeScreen = () => {
   useEffect(() => {
