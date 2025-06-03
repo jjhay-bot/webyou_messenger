@@ -63,7 +63,7 @@ const DefaultHeader = ({ children }) => {
 
   return (
     <Stack p={1}>
-      <Typography variant="title">Memory Jars</Typography>
+      <Typography variant="title">Webyou</Typography>
       {/* <Button variant="outlined" color={color} sx={{ fontWeight: "bold", letterSpacing: "0.25px" }}>
         {children || "DefaultHeader"}
       </Button> */}
