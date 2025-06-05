@@ -16,17 +16,35 @@ import { useReactiveVar } from "@apollo/client";
 import { psidVar } from "./graphql/reactiveVars";
 
 const App = () => {
-  // const loadingLocal = useReactiveVar(loadingLocalVar);
-  // const { isLogin } = useUiActions();
+  const [loadingStatus, setLoadingStatus] = useState("loading");
+  const [errorMessage, setErrorMessage] = useState(null);
 
-  // useEffect(() => {
-  //   isLogin();
-  // }, []);
+  useEffect(() => {
+    window.extAsyncInit = function () {
+      setLoadingStatus("success");
+      console.log("Messenger Extensions SDK loaded");
+    };
 
-  // if (loadingLocal) return null;
+    // Optional: handle errors
+    const script = document.createElement("script");
+    script.src = "https://connect.facebook.net/en_US/messenger.Extensions.js";
+    script.async = true;
+    document.body.appendChild(script);
+
+    script.onerror = () => {
+      setLoadingStatus("failed");
+      setErrorMessage("Failed to load Messenger Extensions SDK");
+    };
+  }, []);
 
   return (
     <>
+      {loadingStatus === "loading" && <p>Loading...</p>}
+      {loadingStatus === "success" && (
+        <p>Messenger Extensions SDK loaded successfully!</p>
+      )}
+      {loadingStatus === "failed" && <p>Error: {errorMessage}</p>}
+
       <FacebookInit />
       <Routes>
         <Route path="/" element={<Layout />}>
@@ -73,11 +91,18 @@ const DefaultHeader = ({ children }) => {
 
 const DefaultFooter = () => <Stack p={1}>DefaultFooter</Stack>;
 
-const ScreenContainer = ({ vh = "100vh", children, header, footer, content, ...props }) => {
+const ScreenContainer = ({
+  vh = "100vh",
+  children,
+  header,
+  footer,
+  content,
+  ...props
+}) => {
   const supportsDvh = window.CSS && CSS.supports("(height: 100dvh)");
   const maxHeightUnit = supportsDvh ? vh : "100vh";
   const psid = useReactiveVar(psidVar);
-  
+
   return (
     <Stack className="layout" height={maxHeightUnit} {...props}>
       <Nav top={`calc(${maxHeightUnit} / 2)`} />
