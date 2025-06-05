@@ -20,20 +20,25 @@ const App = () => {
   const [errorMessage, setErrorMessage] = useState(null);
 
   useEffect(() => {
-    window.extAsyncInit = function () {
-      setLoadingStatus("success");
-      console.log("Messenger Extensions SDK loaded");
-    };
-
-    // Optional: handle errors
     const script = document.createElement("script");
     script.src = "https://connect.facebook.net/en_US/messenger.Extensions.js";
     script.async = true;
     document.body.appendChild(script);
 
-    script.onerror = () => {
-      setLoadingStatus("failed");
-      setErrorMessage("Failed to load Messenger Extensions SDK");
+    window.extAsyncInit = function () {
+      setLoadingStatus("success");
+      console.log("Messenger Extensions SDK loaded");
+    };
+
+    const timeoutId = setTimeout(() => {
+      if (loadingStatus === "loading") {
+        setLoadingStatus("failed");
+        setErrorMessage("Failed to load Messenger Extensions SDK");
+      }
+    }, 5000); // 5-second timeout
+
+    return () => {
+      clearTimeout(timeoutId);
     };
   }, []);
 
