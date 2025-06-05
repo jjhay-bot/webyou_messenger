@@ -55,3 +55,18 @@ export const FacebookInit = () => {
 
   return null;
 };
+
+export const closeWebView = () => {
+  if (window.MessengerExtensions && window.MessengerExtensions.requestCloseBrowser) {
+    window.MessengerExtensions.requestCloseBrowser(
+      () => {
+        console.log("Webview closed successfully.");
+      },
+      (err) => {
+        console.error("Error closing webview: ", err);
+      }
+    );
+  } else {
+    console.warn("MessengerExtensions.requestCloseBrowser is not available.");
+  }
+};

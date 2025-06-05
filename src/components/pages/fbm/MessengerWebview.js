@@ -1,64 +1,13 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { useReactiveVar } from "@apollo/client"; // Import useReactiveVar
+import { psidVar } from "../../../graphql/reactiveVars"; // Import psidVar
+import { closeWebView } from "../../../utils/FacebookInit";
 
 function MessengerWebview() {
-  const [psid, setPsid] = useState();
-  const [isReady, setIsReady] = useState(false);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState(null); // setError might still be needed for other errors
+  const psid = useReactiveVar(psidVar); // Retrieve PSID using useReactiveVar
 
-  useEffect(() => {
-    const pageId = process.env.REACT_APP_PAGE_ID;
-
-    if (!pageId) {
-      setError("REACT_APP_PAGE_ID is not defined.");
-      return;
-    }
-
-    const interval = setInterval(() => {
-      if (window.MessengerExtensions) {
-        clearInterval(interval);
-
-        window.MessengerExtensions.getContext(
-          pageId,
-          (context) => {
-            setPsid(context.psid);
-            setIsReady(true);
-            console.log("Messenger context:", context);
-          },
-          (err) => {
-            console.error("MessengerExtensions.getContext failed", err);
-            const errMsg =
-              typeof err === "string" ? err : err?.message || JSON.stringify(err, null, 2);
-            setError(`getContext failed: ${errMsg}`);
-          }
-        );
-      }
-    }, 100);
-
-    setTimeout(() => {
-      if (!window.MessengerExtensions) {
-        clearInterval(interval);
-        setError("MessengerExtensions SDK not available. Are you inside Messenger Webview?");
-      }
-    }, 5000);
-
-    return () => clearInterval(interval);
-  }, []);
-
-  const closeWebview = () => {
-    if (window.MessengerExtensions) {
-      window.MessengerExtensions.requestCloseBrowser(
-        () => console.log("Webview closed"),
-        (err) => {
-          console.error("Failed to close webview", err);
-          const errMsg =
-            typeof err === "string" ? err : err?.message || JSON.stringify(err, null, 2);
-          setError(`requestCloseBrowser failed: ${errMsg}`);
-        }
-      );
-    } else {
-      setError("MessengerExtensions not available. Cannot close webview.");
-    }
-  };
+  // Removed local closeWebview function
 
   return (
     <div style={{ padding: "1rem", fontFamily: "sans-serif" }}>
@@ -72,16 +21,16 @@ function MessengerWebview() {
           <strong>Error:</strong> {error}
         </div>
       )}
-      {isReady ? (
-        <>
-          <p>
-            <strong>PSID:</strong> {psid}
-          </p>
-        </>
-      ) : !error ? (
-        <p>Loading Messenger context...</p>
-      ) : null}
-      <button onClick={closeWebview}>Close Webview</button>
+      {/* Kept error display */}
+      {psid && !error && ( // Display PSID if available and no error
+        <p>
+          <strong>PSID:</strong> {psid}
+        </p>
+      )}
+      {!psid && !error && ( // Show loading or alternative message if PSID not yet available
+        <p>PSID not available yet. It should appear if FacebookInit is successful.</p>
+      )}
+      <button onClick={closeWebView}>Close Webview</button>
     </div>
   );
 }
