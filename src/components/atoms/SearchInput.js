@@ -22,7 +22,7 @@ const SearchInput = ({
 
   useEffect(() => {
     setShowClearIcon(!!value[snakeCase(label || name)]);
-  }, [value]);
+  }, [value, label, name]);
 
   return (
     <Stack spacing={0.75}>

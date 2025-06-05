@@ -1,8 +1,6 @@
 import React, { useEffect } from "react";
 import { ScreenContainer } from "../../App";
 import { Divider, Stack } from "@mui/material";
-import { useReactiveVar } from "@apollo/client";
-import { psidVar } from "../../graphql/reactiveVars";
 import MessengerWebview from "./fbm/MessengerWebview";
 
 const HomeScreen = () => {

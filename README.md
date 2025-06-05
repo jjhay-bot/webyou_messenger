@@ -1,70 +1,84 @@
-# Getting Started with Create React App
+# Growsari Web Mobile App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project is a React-based web application, likely serving as a mobile-first interface for an e-commerce or payment platform. It utilizes Material UI for components, Apollo Client for GraphQL communication, and various integrations like Google Analytics and Facebook Pixel.
+
+## Project Setup
+
+1.  **Clone the repository.**
+2.  **Install dependencies:**
+    ```bash
+    npm install
+    ```
+3.  **Environment Configuration:**
+    This project uses a `src/config.template.js` file to generate `src/config.js` at build time or when manually triggered. The following environment variables are used:
+
+    *   `REACT_APP_STAGE`: Specifies the current application stage (e.g., `development`, `staging`, `production`).
+    *   `REACT_APP_QR_CODE`: Potentially a stringหรือ URL for a QR code used within the application.
+
+    To set these variables for local development, you can create a `.env.local` file in the root directory:
+    ```env
+    REACT_APP_STAGE=development
+    REACT_APP_QR_CODE=your_qr_code_value_here
+    ```
+    Then, run the `buildAssist` script (see below) to generate `src/config.js`.
 
 ## Available Scripts
 
 In the project directory, you can run:
 
 ### `npm start`
+Runs the app in the development mode using the configuration possibly generated from `.env.development.local` (if `buildAssist` is run with it) or a default/committed `src/config.js`.
+Open [http://localhost:3000](http://localhost:3000) to view it in your browser. The page will reload when you make changes.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
-
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### `npm run start:production`
+Runs the app in development mode but attempts to use production-like settings by referencing `.env.production.local` for environment variables when running `npm start`.
+```bash
+env-cmd -f .env.production.local npm start
+```
+You would typically use this with a `buildAssist` command configured for production variables.
 
 ### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Launches the test runner in the interactive watch mode.
 
 ### `npm run build`
+Builds the app for production to the `build` folder. It correctly bundles React in production mode and optimizes the build for the best performance. This script should be preceded by a `buildAssist` run that uses the correct production environment variables.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### `npm run buildAssist`
+This custom script generates the `src/config.js` file from `src/config.template.js` by injecting values from environment variables. It is typically used with `env-cmd` to specify which `.env` file to use. For example, to prepare for a local build using `.env.local`:
+```bash
+env-cmd -f .env.local node utils/buildAssist.js
+```
+Or, as defined in `package.json`:
+```bash
+npm run buildAssist
+# This runs: env-cmd -f .env.local node utils/buildAssist.js
+```
+Ensure you run this script whenever environment variables need to be updated in the application's runtime configuration.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### `npm run serve`
+Serves the static files from the `build` folder on port 3000. Useful for testing a production build locally.
+```bash
+serve -s build -l 3000
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### `npm run lint`
+Runs the ESLint checker to find and report issues in the codebase.
 
 ### `npm run eject`
-
 **Note: this is a one-way operation. Once you `eject`, you can't go back!**
+Removes the single build dependency (`react-scripts`) and copies all configuration files and transitive dependencies into your project.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## Key Technologies
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+*   React
+*   Material UI (MUI)
+*   Apollo Client (GraphQL)
+*   React Router
+*   Firebase
+*   Google Analytics
+*   Facebook Pixel
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+## Further Learning
 
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+*   [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started)
+*   [React documentation](https://reactjs.org/)

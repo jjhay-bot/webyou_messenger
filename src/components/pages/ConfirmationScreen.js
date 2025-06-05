@@ -21,7 +21,7 @@ const ConfirmationScreen = () => {
 
   useEffect(() => {
     if (!paymentDetails?.created_at) navigate("/qr-code");
-  }, []);
+  }, [navigate, paymentDetails?.created_at]);
 
   const time = paymentDetails?.created_at
     ? format(new Date(paymentDetails?.created_at), "HH:mm:ss")

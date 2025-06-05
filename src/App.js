@@ -1,30 +1,16 @@
 import { Routes, Route } from "react-router-dom";
 import { HomeScreen } from "./components/pages";
-import { Badge, Box, Button, Stack, Typography } from "@mui/material";
+import { Badge, Stack, Typography } from "@mui/material";
 import { Outlet } from "react-router-dom";
-// import { useEffect } from "react";
-// import { useReactiveVar } from "@apollo/client";
-// import { loadingLocalVar } from "./graphql/reactiveVars";
-// import { useUiActions } from "./graphql/hooks";
 import SvhScreen from "./components/pages/SvhScreen";
 import LvhScreen from "./components/pages/LvhScreen";
 import DvhScreen from "./components/pages/DvhScreen";
 import Nav from "./components/atoms/Nav";
-import { useEffect, useState } from "react";
 import { FacebookInit } from "./utils/FacebookInit";
 import { useReactiveVar } from "@apollo/client";
 import { psidVar } from "./graphql/reactiveVars";
 
 const App = () => {
-  // const loadingLocal = useReactiveVar(loadingLocalVar);
-  // const { isLogin } = useUiActions();
-
-  // useEffect(() => {
-  //   isLogin();
-  // }, []);
-
-  // if (loadingLocal) return null;
-
   return (
     <>
       <FacebookInit />
@@ -47,26 +33,9 @@ const Layout = () => {
 };
 
 const DefaultHeader = ({ children }) => {
-  const [color, setColor] = useState("primary");
-
-  const colorArray = ["primary", "secondary", "info", "success"];
-  const vh = ["100svh", "100dvh", "100lvh", "100vh"];
-
-  const getColorIndex = (val) => {
-    const index = vh.indexOf(val);
-    return index !== -1 ? index : 0;
-  };
-
-  useEffect(() => {
-    setColor(colorArray[getColorIndex(children)]);
-  }, [children]);
-
   return (
     <Stack p={1}>
       <Typography variant="title">Webyou</Typography>
-      {/* <Button variant="outlined" color={color} sx={{ fontWeight: "bold", letterSpacing: "0.25px" }}>
-        {children || "DefaultHeader"}
-      </Button> */}
     </Stack>
   );
 };
