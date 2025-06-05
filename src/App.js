@@ -48,18 +48,15 @@ const App = () => {
   }, []);
 
   const handleCloseWebview = () => {
-    window.extAsyncInit = function () {
-      window.MessengerExtensions.requestCloseBrowser(
-        function success() {
-          console.log("Webview closed successfully");
-        },
-        function error(err) {
-          alert("Error closing webview: " + err);
-        }
-      );
-    };
+    window.MessengerExtensions.requestCloseBrowser(
+      function success() {
+        console.log("Webview closed successfully");
+      },
+      function error(err) {
+        alert("Error closing webview: " + JSON.stringify(err));
+      }
+    );
   };
-
   return (
     <>
       {loadingStatus === "loading" && <p>Loading...</p>}
