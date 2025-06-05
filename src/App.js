@@ -16,24 +16,24 @@ import { useReactiveVar } from "@apollo/client";
 import { psidVar } from "./graphql/reactiveVars";
 
 const App = () => {
-  const [loadingStatus, setLoadingStatus] = useState("loading");
+  const [loadingStatus, setLoadingStatus] = useState('loading');
   const [errorMessage, setErrorMessage] = useState(null);
 
   useEffect(() => {
-    const script = document.createElement("script");
-    script.src = "https://connect.facebook.net/en_US/messenger.Extensions.js";
+    const script = document.createElement('script');
+    script.src = 'https://connect.facebook.net/en_US/messenger.Extensions.js';
     script.async = true;
     document.body.appendChild(script);
 
-    window.extAsyncInit = function () {
-      setLoadingStatus("success");
+    window.extAsyncInit = function() {
+      setLoadingStatus('success');
       console.log("Messenger Extensions SDK loaded");
     };
 
     const timeoutId = setTimeout(() => {
-      if (loadingStatus === "loading") {
-        setLoadingStatus("failed");
-        setErrorMessage("Failed to load Messenger Extensions SDK");
+      if (loadingStatus === 'loading') {
+        setLoadingStatus('failed');
+        setErrorMessage('Failed to load Messenger Extensions SDK');
       }
     }, 5000); // 5-second timeout
 
@@ -44,26 +44,63 @@ const App = () => {
 
   return (
     <>
-      {loadingStatus === "loading" && <p>Loading...</p>}
-      {loadingStatus === "success" && (
-        <p>Messenger Extensions SDK loaded successfully!</p>
+      {loadingStatus === 'loading' && <p>Loading...</p>}
+      {loadingStatus === 'success' && <p>Messenger Extensions SDK loaded successfully!</p>}
+      {loadingStatus === 'failed' && (
+        <p>Error: {errorMessage}</p>
       )}
-      {loadingStatus === "failed" && <p>Error: {errorMessage}</p>}
-
-      <FacebookInit />
-      <Routes>
-        <Route path="/" element={<Layout />}>
-          <Route path="/" element={<HomeScreen />} />
-          <Route path="svh" element={<SvhScreen />} />
-          <Route path="lvh" element={<LvhScreen />} />
-          <Route path="dvh" element={<DvhScreen />} />
-          {/* <Route path="/invoice" element={<InvoiceScreen />} /> */}
-          {/* <Route path="*" element={<CheckoutPage />} />  */}
-        </Route>
-      </Routes>
     </>
   );
 };
+// const App = () => {
+//   const [loadingStatus, setLoadingStatus] = useState("loading");
+//   const [errorMessage, setErrorMessage] = useState(null);
+
+//   useEffect(() => {
+//     const script = document.createElement("script");
+//     script.src = "https://connect.facebook.net/en_US/messenger.Extensions.js";
+//     script.async = true;
+//     document.body.appendChild(script);
+
+//     window.extAsyncInit = function () {
+//       setLoadingStatus("success");
+//       console.log("Messenger Extensions SDK loaded");
+//     };
+
+//     const timeoutId = setTimeout(() => {
+//       if (loadingStatus === "loading") {
+//         setLoadingStatus("failed");
+//         setErrorMessage("Failed to load Messenger Extensions SDK");
+//       }
+//     }, 5000); // 5-second timeout
+
+//     return () => {
+//       clearTimeout(timeoutId);
+//     };
+//   }, []);
+
+//   return (
+//     <>
+//       {loadingStatus === "loading" && <p>Loading...</p>}
+//       {loadingStatus === "success" && (
+//         <p>Messenger Extensions SDK loaded successfully!</p>
+//       )}
+//       {loadingStatus === "failed" && <p>Error: {errorMessage}</p>}
+
+//       {/* <FacebookInit /> */}
+//       <Routes>
+//         <Route path="/" element={<Layout />}>
+//           <Route path="/" element={<HomeScreen />} />
+//           <Route path="svh" element={<SvhScreen />} />
+//           <Route path="lvh" element={<LvhScreen />} />
+//           <Route path="dvh" element={<DvhScreen />} />
+//           {/* <Route path="/invoice" element={<InvoiceScreen />} /> */}
+//           {/* <Route path="*" element={<CheckoutPage />} />  */}
+//         </Route>
+//       </Routes>
+//     </>
+//   );
+// };
 
 const Layout = () => {
   return <Outlet />;
