@@ -16,63 +16,64 @@ import { useReactiveVar } from "@apollo/client";
 import { psidVar } from "./graphql/reactiveVars";
 
 const App = () => {
-  const [loadingStatus, setLoadingStatus] = useState('loading');
+  const [loadingStatus, setLoadingStatus] = useState("loading");
   const [errorMessage, setErrorMessage] = useState(null);
   const [userId, setUserId] = useState(null);
 
   useEffect(() => {
-    const script = document.createElement('script');
-    script.src = 'https://connect.facebook.net/en_US/messenger.Extensions.js';
+    const script = document.createElement("script");
+    script.src = "https://connect.facebook.net/en_US/messenger.Extensions.js";
     script.async = true;
     document.body.appendChild(script);
 
-    window.extAsyncInit = function() {
-      setLoadingStatus('success');
+    window.extAsyncInit = function () {
+      setLoadingStatus("success");
       console.log("Messenger Extensions SDK loaded");
 
       // Get User ID
-      window.MessengerExtensions.getUserID(function success(userId) {
-        setUserId(userId);
-      }, function error(err) {
-        console.log("Error getting user ID: " + err);
-      });
+      window.MessengerExtensions.getUserID(
+        function success(userId) {
+          setUserId(userId);
+        },
+        function error(err) {
+          alert("Error getting user ID: " + err);
+        }
+      );
     };
 
     script.onerror = () => {
-      setLoadingStatus('failed');
-      setErrorMessage('Failed to load Messenger Extensions SDK');
+      setLoadingStatus("failed");
+      setErrorMessage("Failed to load Messenger Extensions SDK");
     };
   }, []);
 
   const handleCloseWebview = () => {
-    window.extAsyncInit = function() {
-      window.MessengerExtensions.requestCloseBrowser(function success() {
-        console.log("Webview closed successfully");
-      }, function error(err) {
-        console.log("Error closing webview: " + err);
-      });
+    window.extAsyncInit = function () {
+      window.MessengerExtensions.requestCloseBrowser(
+        function success() {
+          console.log("Webview closed successfully");
+        },
+        function error(err) {
+          alert("Error closing webview: " + err);
+        }
+      );
     };
   };
 
   return (
     <>
-      {loadingStatus === 'loading' && <p>Loading...</p>}
-      {loadingStatus === 'success' && (
+      {loadingStatus === "loading" && <p>Loading...</p>}
+      {loadingStatus === "success" && (
         <div>
           <p>Messenger Extensions SDK loaded successfully!</p>
           {userId && <p>User ID: {userId}</p>}
           <button onClick={handleCloseWebview}>Close Webview</button>
         </div>
       )}
-      {loadingStatus === 'failed' && (
-        <p>Error: {errorMessage}</p>
-      )}
+      {loadingStatus === "failed" && <p>Error: {errorMessage}</p>}
     </>
   );
 };
-
-
-
 
 const Layout = () => {
   return <Outlet />;
