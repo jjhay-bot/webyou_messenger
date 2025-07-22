@@ -1,7 +1,10 @@
 import { createTheme } from "@mui/material/styles";
+import { allThemeProps } from "./allThemeProps";
 
 const theme = createTheme({
+  ...allThemeProps,
   palette: {
+    ...allThemeProps.palette,
     primary: {
       main: "#ed5a29",
     },
@@ -10,6 +13,7 @@ const theme = createTheme({
     },
   },
   typography: {
+    ...allThemeProps.typography,
     fontFamily: "Poppins",
     title: {
       fontFamily: "Poppins",
@@ -93,7 +97,7 @@ const theme = createTheme({
       color: "#262338",
       letterSpacing: "0.25px",
     },
-    body4: {
+    body4:. {
       fontFamily: "Poppins",
       fontSize: "13px",
       fontWeight: 600,
@@ -102,26 +106,30 @@ const theme = createTheme({
     },
   },
   breakpoints: {
+    ...allThemeProps.breakpoints,
     values: {
-      xs: 0,
-      sm: 600,
-      md: 900,
-      lg: 1200,
-      xl: 1536,
+      ...allThemeProps.breakpoints.values,
       custom: 425,
     },
   },
   components: {
+    ...allThemeProps.components,
     MuiTooltip: {
+      ...allThemeProps.MuiTooltip,
       styleOverrides: {
+        ...allThemeProps.MuiTooltip.styleOverrides,
         tooltip: {
+          ...allThemeProps.MuiTooltip.styleOverrides.tooltip,
           fontSize: "8px",
         },
       },
     },
     MuiButton: {
+      ...allThemeProps.MuiButton,
       styleOverrides: {
+        ...allThemeProps.MuiButton.styleOverrides,
         root: {
+          ...allThemeProps.MuiButton.styleOverrides.root,
           borderRadius: "16px",
           textTransform: "none",
         },
@@ -139,26 +147,6 @@ const theme = createTheme({
         },
       },
     },
-    // MuiOutlinedInput: {
-    //   styleOverrides: {
-    //     root: {
-    //       borderRadius: `8px`,
-    //       border: "white 1px solid",
-    //       "& input::-webkit-outer-spin-button, & input::-webkit-inner-spin-button": {
-    //         display: "none",
-    //       },
-    //       "& input[type=number]": {
-    //         MozAppearance: "textfield",
-    //       },
-    //       "& input:-internal-autofill-selected": {
-    //         background: "none",
-    //       },
-    //       "&.Mui-focused fieldset": {
-    //         border: "1px #fff !important",
-    //       },
-    //     },
-    //   },
-    // },
   },
 });
 
