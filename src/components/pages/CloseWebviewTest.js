@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const loadMessengerSDK = () =>
   new Promise((resolve, reject) => {
@@ -17,15 +17,25 @@ const loadMessengerSDK = () =>
 const CloseWebviewTest = () => {
   const [status, setStatus] = useState("Loading Messenger SDK...");
   const [isMessengerReady, setIsMessengerReady] = useState(false);
+  const fallbackCloseTimer = useRef(null);
 
   const closeWebview = () => {
     const fallbackClose = () => {
-      setStatus("Fallback: calling window.close()");
-      try {
-        window.close();
-      } catch (error) {
-        setStatus(`Fallback failed: ${error?.message || error}`);
+      if (fallbackCloseTimer.current) {
+        setStatus("Fallback close debounced; waiting to finish...");
+        return;
       }
+
+      fallbackCloseTimer.current = setTimeout(() => {
+        setStatus("Fallback: calling window.close()");
+        try {
+          window.close();
+        } catch (error) {
+          setStatus(`Fallback failed: ${error?.message || error}`);
+        } finally {
+          fallbackCloseTimer.current = null;
+        }
+      }, 250);
     };
 
     if (window.MessengerExtensions && isMessengerReady) {
@@ -57,6 +67,13 @@ const CloseWebviewTest = () => {
         }
       })
       .catch(error => setStatus(`Error loading Messenger SDK: ${error?.message || error}`));
+
+    return () => {
+      if (fallbackCloseTimer.current) {
+        clearTimeout(fallbackCloseTimer.current);
+        fallbackCloseTimer.current = null;
+      }
+    };
   }, []);
 
   return (
