@@ -1,79 +1,43 @@
-import { Routes, Route } from "react-router-dom";
-import { HomeScreen } from "./components/pages";
-import { Badge, Box, Button, Stack, Typography } from "@mui/material";
-import { Outlet } from "react-router-dom";
-// import { useEffect } from "react";
-// import { useReactiveVar } from "@apollo/client";
-// import { loadingLocalVar } from "./graphql/reactiveVars";
-// import { useUiActions } from "./graphql/hooks";
-import SvhScreen from "./components/pages/SvhScreen";
-import LvhScreen from "./components/pages/LvhScreen";
-import DvhScreen from "./components/pages/DvhScreen";
-import Nav from "./components/atoms/Nav";
+import { Routes, Route, Link } from "react-router-dom";
+import { Badge, Button, Stack, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
-import { FacebookInit } from "./utils/FacebookInit";
 import { useReactiveVar } from "@apollo/client";
+import Nav from "./components/atoms/Nav";
 import { psidVar } from "./graphql/reactiveVars";
+import CloseWebviewTest from "./components/pages/CloseWebviewTest";
+import SuccessFbmLinking from "./components/pages/SuccessFbmLinking";
+
+const Home = () => (
+  <Stack p={3} gap={2}>
+    <Typography variant="h6">Messenger webview helpers</Typography>
+    <Typography variant="body2" sx={{ color: "text.secondary" }}>
+      Quick links to test closing behaviors.
+    </Typography>
+    <Stack direction="row" gap={2} flexWrap="wrap">
+      <a href="http://localhost:3000/success-fbm-linking" target="_top">
+        link
+      </a>
+      <Button onClick={() => window.open("http://localhost:3000/success-fbm-linking", "_blank")}>
+        Open Link
+      </Button>
+      <Button component={Link} to="/close-webview-test" variant="contained">
+        Close Webview Test
+      </Button>
+      <Button component={Link} to="/success-fbm-linking" variant="outlined">
+        Success FBM Linking
+      </Button>
+    </Stack>
+  </Stack>
+);
 
 const App = () => {
-  const [loadingStatus, setLoadingStatus] = useState("loading");
-  const [errorMessage, setErrorMessage] = useState(null);
-  const [userId, setUserId] = useState(null);
-
-  useEffect(() => {
-    const script = document.createElement("script");
-    script.src = "https://connect.facebook.net/en_US/messenger.Extensions.js";
-    script.async = true;
-    document.body.appendChild(script);
-
-    window.extAsyncInit = function () {
-      setLoadingStatus("success");
-      console.log("Messenger Extensions SDK loaded");
-
-      // Get User ID
-      window.MessengerExtensions.getUserID(
-        function success(userId) {
-          setUserId(userId);
-        },
-        function error(err) {
-          alert("Error getting user ID: " + err);
-        }
-      );
-    };
-
-    script.onerror = () => {
-      setLoadingStatus("failed");
-      setErrorMessage("Failed to load Messenger Extensions SDK");
-    };
-  }, []);
-
-  const handleCloseWebview = () => {
-    window.MessengerExtensions.requestCloseBrowser(
-      function success() {
-        console.log("Webview closed successfully");
-      },
-      function error(err) {
-        alert("Error closing webview: " + JSON.stringify(err));
-      }
-    );
-  };
   return (
-    <>
-      {loadingStatus === "loading" && <p>Loading...</p>}
-      {loadingStatus === "success" && (
-        <div>
-          <p>Messenger Extensions SDK loaded successfully!</p>
-          {userId && <p>User ID: {userId}</p>}
-          <button onClick={handleCloseWebview}>Close Webview</button>
-        </div>
-      )}
-      {loadingStatus === "failed" && <p>Error: {errorMessage}</p>}
-    </>
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/close-webview-test" element={<CloseWebviewTest />} />
+      <Route path="/success-fbm-linking" element={<SuccessFbmLinking open />} />
+    </Routes>
   );
-};
-
-const Layout = () => {
-  return <Outlet />;
 };
 
 const DefaultHeader = ({ children }) => {

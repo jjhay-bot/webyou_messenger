@@ -43,4 +43,7 @@ export const invoiceListVar = makeVar([]);
 export const reasonListVar = makeVar([]);
 
 
-export const psidVar = makeVar('test')
+export const psidVar = makeVar('test');
+
+export const linkFbmSuccessVar = makeVar(false);
+export const linkFbmLoadingVar = makeVar(true);
