@@ -17,7 +17,7 @@ const Home = () => (
       <a href={`${window.location.origin}/success-fbm-linking`} target="_top">
         link
       </a>
-      <Button onClick={() => window.open(`${window.location.origin}/success-fbm-linking`, "_blank")}>
+      <Button onClick={() => window.open(`${window.location.origin}/close-webview-test`, "_blank")}>
         Open Link
       </Button>
       <Button component={Link} to="/close-webview-test" variant="contained">
