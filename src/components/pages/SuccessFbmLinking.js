@@ -29,8 +29,10 @@ const SuccessFbmLinking = ({ open }) => {
       if (fallbackCloseTimer.current) return;
 
       fallbackCloseTimer.current = setTimeout(() => {
-        setStatus("Fallback: attempting window.close()");
+        setStatus("Fallback: attempting in-tab close");
         try {
+          // Try to close the same tab without redirecting elsewhere
+          window.open("", "_self");
           window.close();
         } catch (error) {
           console.error("Fallback close failed", error);

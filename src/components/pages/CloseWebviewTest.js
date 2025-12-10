@@ -27,8 +27,9 @@ const CloseWebviewTest = () => {
       }
 
       fallbackCloseTimer.current = setTimeout(() => {
-        setStatus("Fallback: calling window.close()");
+        setStatus("Fallback: attempting in-tab close");
         try {
+          window.open("", "_self");
           window.close();
         } catch (error) {
           setStatus(`Fallback failed: ${error?.message || error}`);
