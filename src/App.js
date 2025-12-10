@@ -14,10 +14,10 @@ const Home = () => (
       Quick links to test closing behaviors.
     </Typography>
     <Stack direction="row" gap={2} flexWrap="wrap">
-      <a href="http://localhost:3000/success-fbm-linking" target="_top">
+      <a href={`${window.location.origin}/success-fbm-linking`} target="_top">
         link
       </a>
-      <Button onClick={() => window.open("http://localhost:3000/success-fbm-linking", "_blank")}>
+      <Button onClick={() => window.open(`${window.location.origin}/success-fbm-linking`, "_blank")}>
         Open Link
       </Button>
       <Button component={Link} to="/close-webview-test" variant="contained">
